@@ -1,0 +1,30 @@
+{{#> layout-private }}
+  {{#* inline "head" }}
+    <title>Register - BPM</title>
+  {{/ inline }}
+
+  {{#* inline "content" }}
+    <div class="position-middle">
+      <form method="post" action="/_bpm/login/register">
+        <fieldset>
+          <div>
+            <label for="user">User</label>
+            <input type="text" name="user" placeholder="user@example.com">
+          </div>
+
+          <div>
+            <label for="user">Password</label>
+            <input type="password" name="password">
+          </div>
+
+          <div>
+            <label for="user">Retype password</label>
+            <input type="password" name="retype-password">
+          </div>
+
+          <button type="submit">Add a new user</button>
+        </fieldset>
+      </form>
+    </div>
+  {{/ inline }}
+{{/ layout-private }}

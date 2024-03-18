@@ -1,0 +1,33 @@
+{{#> layout-private }}
+  {{#* inline "head" }}
+    <title>Team - BPM</title>
+
+    <!-- icons styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  {{/ inline }}
+
+  {{#* inline "content" }}
+    <div>
+      <div class="position-middle">
+        <div>
+          <fieldset>
+            <h1>Team</h1>
+            <small>System users</small>
+
+            <div class="list-container">
+              {{# each list }}
+                <div class="list-item">
+                  <a href="/_bpm/user/{{ this }}">{{ this }}</a>
+
+                  <form action="/_bpm/user/delete/{{ this }}" method="post">
+                    <button><span class="material-symbols-outlined">delete</span></button>
+                  </form>
+                </div>
+              {{/ each }}
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  {{/ inline }}
+{{/ layout-private }}

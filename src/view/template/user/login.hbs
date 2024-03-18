@@ -1,0 +1,25 @@
+{{#> layout-public }}
+  {{#* inline "head" }}
+    <title>Login - BPM</title>
+  {{/ inline }}
+
+  {{#* inline "content" }}
+    <div class="position-middle">
+      <form method="post" action="/_bpm/login/authenticate">
+        <fieldset>
+          <div>
+            <label for="user">User</label>
+            <input type="text" name="user" placeholder="user@example.com">
+          </div>
+
+          <div>
+            <label for="password">Password</label>
+            <input type="password" name="password">
+          </div>
+
+          <button type="submit">Login</button>
+        </fieldset>
+      </form>
+    </div>
+  {{/ inline }}
+{{/ layout-public }}

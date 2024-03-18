@@ -1,0 +1,245 @@
+#bpmn-canvas 
+{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50px;
+  bottom: 40%;
+  left: 0;
+  right: 0;
+}
+#bpmn-sub-menu
+{
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  height: 50px;
+  padding: 0 16px;
+  text-align: right;
+  z-index: 110;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+}
+#bpmn-sub-menu span
+{
+  line-height: 50px;
+  display: inline-block;
+  padding: 0 2px;
+  cursor: pointer;
+  font-size: 18px;
+}
+#bpmn-sub-menu span.divider
+{
+  padding: 0 8px;
+  cursor: default;
+}
+#bpmn-controls,
+#bpmn-terminals
+{
+  position: absolute;
+  top: 60%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f5f5f5;
+  background-image: radial-gradient(#e5e5e5 1px, transparent 1px), radial-gradient(#e5e5e5 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  background-color: #f5f5f5;
+}
+#bpmn-terminals
+{
+  display: none;
+  width: 100%;
+}
+#bpmn-terminals section
+{
+  width: 100%;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  padding: 0 20px 32px 20px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+}
+#bpmn-terminals section:last-child
+{
+  border-bottom: none;
+  margin-bottom: 0;
+}
+#bpmn-terminals section:first-child
+{
+  border-top: none;
+  margin-top: 0;
+}
+#bpmn-terminals section div
+{
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: #333;
+  padding: 8px;
+}
+#bpmn-terminals section pre
+{
+  width: 100%;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 14px;
+  overflow: auto;
+  color: #fff;
+  background: #252525;
+  background: rgba(37, 37, 37, .8);
+  padding: 8px;
+}
+#bpmn-controls--schema,
+#bpmn-controls--input,
+#bpmn-controls--code,
+#bpmn-controls--settings
+{
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#bpmn-controls--schema,
+#bpmn-controls--input,
+#bpmn-controls--settings
+{
+  padding: 16px;
+  overflow-y: auto;
+}
+.delete-field
+{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+  cursor: help;
+}
+#bpmn-controls--input details summary
+{
+  cursor: pointer;
+}
+#bpmn-controls--schema fieldset > div > div
+{
+  float: left;
+}
+#bpmn-controls--schema fieldset > div > div:first-child
+{
+  width: 70%;
+  padding-right: 8px;
+}
+#bpmn-controls--schema fieldset > div > div:last-child
+{
+  width: 30%;
+}
+#bpmn-controls--schema fieldset input,
+#bpmn-controls--schema fieldset select,
+#bpmn-controls--input input,
+#bpmn-controls--settings input
+{
+  border: 1px solid #ddd;
+  background: #fff;
+  display: block;
+  width: 100%;
+  line-height: 32px;
+  height: 32px;
+  font-size: 16px;
+  padding: 0;
+  padding-left: 8px;
+}
+#bpmn-controls--input input.use
+{
+  display: inline;
+  width: auto;
+  height: 10px;
+  padding-left: 0;
+  cursor: help;
+  min-width: 0;
+  margin: 0;
+}
+#bpmn-controls--code--teaxtarea,
+#bpmn-controls--code .CodeMirror
+{
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  height: auto;
+}
+#bpmn-controls nav,
+#bpmn-terminals nav
+{
+  height: 40px;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  outline: #252525 solid 2px;
+  padding-left: 16px;
+  background: #252525;
+  z-index: 1;
+  position: relative;
+}
+#bpmn-controls nav ul,
+#bpmn-terminals nav ul
+{
+  list-style: none;
+}
+#bpmn-controls nav li,
+#bpmn-terminals nav li
+{
+  display: inline-block;
+  padding: 0 16px;
+  line-height: 36px;
+}
+#bpmn-controls nav li span,
+#bpmn-terminals nav li span
+{
+  text-decoration: none;
+  color: #999;
+  cursor: pointer;
+}
+#bpmn-controls nav li.active span,
+#bpmn-terminals nav li.active span
+{
+  color: #ddd;
+}
+#bpmn-controls .resize,
+#bpmn-terminals .resize
+{
+  position: absolute;
+  top: 8px;
+  right: 0;
+  padding-right: 4px;
+  cursor: ns-resize;
+  color: #ddd;
+  z-index: 2;
+}
+#bpmn-controls fieldset,
+#bpmn-controls details
+{
+  margin-top: 16px;
+}
+#print-to-console 
+{
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+#action
+{
+  position: fixed;
+  bottom: 20px;
+  left: 120px;
+}
+#bpmn-terminals #bpmn-terminals-container
+{
+  position: absolute;
+  top: 42px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}

@@ -1,0 +1,272 @@
+.position-middle 
+{
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  min-height: 100vh;           /* Full height of the viewport */
+  width: 100vw;            /* Full width of the viewport */
+  background: #e5e5e5;
+  background-image: linear-gradient(#f5f5f5 0.5px, transparent 0.5px), linear-gradient(to right, #f5f5f5 0.5px, transparent 0.5px);
+  background-size: 11px 11px;
+  background-color: #e5e5e5;
+}
+.position-middle > *
+{
+  width: auto;
+  height: auto;
+  padding: 32px 16px;
+  border: 4px solid #e5e5e5;
+  background: #f5f5f5;
+  outline: #fff solid 2px;
+  border-radius: 8px;
+  background-image: radial-gradient(#e5e5e5 1px, transparent 1px), radial-gradient(#e5e5e5 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  background-color: #f5f5f5;
+  margin: 64px;
+}
+.list-container
+{
+  margin: 0 24px;
+  border: 1px solid #fff;
+  outline: 1px solid #e5e5e5;
+  border-radius: 3px;
+  margin: 16px 0;
+}
+.list-item
+{
+  margin: 0;
+  padding: 8px;
+  border-bottom: 1px solid #fff;
+  overflow: hidden;
+}
+.list-item:first-child
+{
+  border-top: 0;
+}
+.list-item:last-child
+{
+  border-bottom: 0;
+}
+.list-item:nth-child(even)
+{
+  background: #ededed;
+}
+.list-item:nth-child(odd)
+{
+  background: #f5f5f5;
+}
+.list-item a
+{
+  text-decoration: none;
+  color: #666;
+}
+.list-item a:hover,
+.list-item a:focus,
+.list-item a:active
+{
+  color: #333;
+}
+.list-item form
+{
+  float: right;
+  padding: 0;
+}
+.list-item form button
+{
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  line-height: 16px;
+  margin-left: 64px;
+}
+.list-item form button span
+{
+  font-size: 16px;
+  position: relative;
+  top: 2px;
+}
+.list-item a .material-symbols-outlined
+{
+  font-size: 18px;
+  position: relative;
+  top: 1px;
+  float: right;
+  margin-left: 64px;
+}
+.overlay
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5000;
+  opacity: 0.95;
+  background-image: repeating-linear-gradient(135deg, #333333 0, #333333 0.5px, transparent 0, transparent 50%);
+  background-size: 32px 32px;
+  background-color: #252525;
+}
+.flash-message
+{
+  position: fixed;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 32px;
+  z-index: 5001;
+  background-color: rgba(255,255,255,0.5);
+  max-width: 960px;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  font-weight: bold;
+  border-radius: 3px;
+}
+.notification,
+.dialog,
+.confirmation
+{
+  position: fixed;
+  top: 128px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 32px;
+  z-index: 5001;
+  border-radius: 3px;
+  min-height: 128px;
+  background-image: radial-gradient(#e5e5e5 1px, transparent 1px), radial-gradient(#e5e5e5 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  background-color: #f5f5f5;
+  width: 100%;
+  max-width: 960px;
+  -webkit-box-shadow: 0 8px 64px 8px #000000;
+  -moz-box-shadow: 0 8px 64px 8px #000000;
+  box-shadow: 0 8px 64px 8px #000000;
+  outline-offset: 4px;
+  outline: #fff double 3px;
+}
+.notification .close,
+.dialog .close
+{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.notification .content-wrapper,
+.dialog .content-wrapper,
+.confirmation .content-wrapper
+{
+  padding: 32px;
+  margin: 16px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+.notification h2,
+.dialog h2,
+.confirmation h2
+{
+  border-bottom: 0;
+  margin-bottom: 8px;
+}
+.notification .content,
+.dialog .content,
+.confirmation .content
+{
+  overflow: auto;
+  max-height: 100%;
+  max-height: 40vh;
+  border-top: 0;
+}
+.dialog .content
+{
+  overflow: auto;
+  max-height: 100%;
+  max-height: 20vh;
+  border-top: 0;
+}
+.notification .content-wrapper form,
+.dialog .content-wrapper form,
+.confirmation .content-wrapper form
+{
+  margin-top: 32px;
+  position: relative;
+  width: 100%;
+  height: 96px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  outline: 1px solid #e5e5e5;
+  outline-offset: 4px;
+}
+.confirmation .content-wrapper form
+{
+  display: inline-block;
+  height: auto;
+  width: auto;
+}
+.notification .content-wrapper form textarea,
+.dialog .content-wrapper form textarea
+{
+  position: absolute;
+  top: 0;
+  right: 100px;
+  bottom: 0;
+  left: 0;
+  resize: none;
+  border: 4px solid #f5f5f5;
+  background: #fff;
+  outline: 0;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  padding: 8px;
+}
+.notification .content-wrapper form button,
+.dialog .content-wrapper form button,
+.confirmation .content-wrapper form button
+{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  margin: 0;
+  background: #f5f5f5;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow: hidden;
+}
+.confirmation .content-wrapper form button
+{
+  position: static;
+  border-radius: 6px;
+}
+.confirmation .content-wrapper form button:first-child
+{
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.confirmation .content-wrapper form button:last-child
+{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.notification .content-wrapper form button:hover,
+.notification .content-wrapper form button:focus,
+.dialog .content-wrapper form button:hover,
+.dialog .content-wrapper form button:focus,
+.confirmation .content-wrapper form button:hover,
+.confirmation .content-wrapper form button:focus
+{
+  color: #252525;
+}

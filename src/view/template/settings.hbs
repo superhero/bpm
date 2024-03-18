@@ -1,0 +1,65 @@
+{{#> layout-private }}
+  {{#* inline "head" }}
+    <title>Profile - BPM</title>
+
+    <script src="/_bpm/resource/js/dom.js"></script>
+    <script src="/_bpm/resource/js/modal/flash-message.js"></script>
+    <script src="/_bpm/resource/js/modal/notification.js"></script>
+
+    <!-- icons styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  {{/ inline }}
+
+  {{#* inline "content" }}
+    <div>
+      <div class="position-middle">
+        <div>
+          <fieldset>
+            <h1>Settings</h1>
+            <small>System configurations</small>
+
+            <form action="/_bpm/settings/git-remote" method="post">
+              <label for="remote">Git remote</label>
+              <input type="text" name="remote" value="{{ gitRemote }}" placeholder="example: git@github.com:username/repository.git" autocomplete="off" />
+            </form>
+
+            <form action="/_bpm/settings/regenerate-key-pair" method="post">
+              <label>Public key</label>
+              <pre>{{ publicKey }}</pre>
+              <button>Regenerate</button>
+            </form>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  {{/ inline }}
+
+  {{#* inline "footer" }}
+    <script>
+      dom.select('form input').on('change', (event) =>
+      {
+        const
+          form      = dom.from(event.target).parent('form'),
+          action    = form.getAttribute('action'),
+          method    = form.getAttribute('method'),
+          headers   = { 'Content-Type':'application/json' },
+          body      = JSON.stringify(form.select('input,select,textarea').valueMap())
+
+        fetch(action, { method, headers, body, redirect:'manual' })
+          .then((response) =>
+          {
+            if(response.status >= 400) 
+            {
+              throw new Error('Failed to save settings changes. Status: ' + response.status)
+            }
+            else
+            {
+              return response
+            }
+          })
+          .then((result) => flashMessage('saved'))
+          .catch((error) => notification('Failed to save', 'Failed to save settings changes.<pre>' + error.message + '</pre>'));
+      })
+    </script>
+  {{/ inline }}
+{{/ layout-private }}

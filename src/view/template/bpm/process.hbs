@@ -1,0 +1,790 @@
+{{#> layout-private }}
+  {{#* inline "head" }}
+    <title>Process - BPM</title>
+
+    <script src="/_bpm/resource/js/dom.js"></script>
+
+    <script src="/_bpm/resource/js/modal/dialog.js"></script>
+    <script src="/_bpm/resource/js/modal/notification.js"></script>
+    <script src="/_bpm/resource/js/modal/flash-message.js"></script>
+
+    <!-- icons styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- required modeler styles -->
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@15.2.2/dist/assets/bpmn-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@15.2.2/dist/assets/diagram-js.css">
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@15.2.2/dist/assets/bpmn-font/css/bpmn.css">
+
+    <!-- codemirror styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+
+    <!-- modeler distro -->
+    <script src="https://unpkg.com/bpmn-js@15.2.2/dist/bpmn-modeler.development.js"></script>
+
+    <!-- codemirror javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/_bpm/resource/css/process.css" />
+  {{/ inline }}
+
+  {{#* inline "content" }}
+    <div id="bpmn-sub-menu">
+      <span id="bpmn-test"                title="Test"                class="material-symbols-outlined">play_arrow</span>
+      <span id="bpmn-terminal"            title="Terminal"            class="material-symbols-outlined">terminal</span>
+
+      <span class="divider"></span>
+
+      <span id="bpmn-documentation"       title="Documentation"       class="material-symbols-outlined">article</span>
+      <span id="bpmn-download-as-image"   title="Download as image"   class="material-symbols-outlined">image</span>
+
+      <span class="divider"></span>
+
+      <span id="bpmn-export"              title="Export"              class="material-symbols-outlined">upload</span>
+      <span id="bpmn-import"              title="Import"              class="material-symbols-outlined">download</span>
+      <span id="bpmn-save"                title="Save"                class="material-symbols-outlined">publish</span>
+    </div>
+
+    <div id="bpmn-canvas"></div>
+    <div id="bpmn-controls"></div>
+    <div id="bpmn-terminals"></div>
+  {{/ inline }}
+
+  {{#* inline "footer" }}
+    <script>
+      function serialize(input) 
+      {
+        return input && btoa(JSON.stringify(input))
+      }
+
+      function unserialize(serializedString) 
+      {
+        return serializedString && JSON.parse(atob(serializedString))
+      }
+
+      function createControllerResizeButton()
+      {
+        const resise_bar = dom.new('span')
+        resise_bar.addClass('resize')
+        resise_bar.addClass('material-symbols-outlined')
+        resise_bar.setContent('drag_indicator')
+        resise_bar.setAttribute('title', 'Resize the controls area')
+        resise_bar.on('mousedown', (event) =>
+        {
+          event.preventDefault()
+          const controls = dom.select('#bpmn-controls')
+          const canvas = dom.select('#bpmn-canvas')
+          const terminals = dom.select('#bpmn-terminals')
+          const startY = event.clientY
+          const clientHeight = controls.getHeight().client || terminals.getHeight().client
+          const startBottomHeight = clientHeight / window.innerHeight
+          const startTopHeight = (window.innerHeight - clientHeight) / window.innerHeight
+          const onMouseMove = (event) =>
+          {
+            event.preventDefault()
+            const 
+              diff    = (event.clientY - startY) / window.innerHeight,
+              top     = startTopHeight + diff,
+              bottom  = startBottomHeight - diff
+
+            if(top    > 0.1
+            && bottom > 0.1)
+            {
+              terminals.setCss('top', (top * 100).toFixed(2) + '%')
+              controls.setCss('top', (top * 100).toFixed(2) + '%')
+              canvas.setCss('bottom', (bottom * 100).toFixed(2) + '%')
+            }
+          }
+          const onMouseUp = () =>
+          {
+            document.removeEventListener('mousemove', onMouseMove)
+            document.removeEventListener('mouseup', onMouseUp)
+          }
+          document.addEventListener('mousemove', onMouseMove)
+          document.addEventListener('mouseup', onMouseUp)
+        })
+
+        return resise_bar
+      }
+
+      function onActivitySelected(event)
+      {
+        // event.element = the model element
+        // event.gfx = the graphical element
+        // console.log(event, 'on', event.element.id)
+        // console.log('event.element.type:', event.element.type)
+
+        const businessObject = event.element.businessObject
+
+        if(dom.select('#bpmn-terminals').getCss('display') === 'block')
+        {
+          const top = dom.select('#bpmn-terminals').getCss('top')
+          dom.select('#bpmn-terminals').setCss('display', 'none')
+          dom.select('#bpmn-controls').setCss('display', 'block')
+          dom.select('#bpmn-controls').setCss('top', top)
+        }
+
+        dom.select('#bpmn-controls').children().remove()
+
+        const resise_bar = createControllerResizeButton()
+        dom.select('#bpmn-controls').append(resise_bar)
+
+        switch(event.element.type)
+        {
+          case 'bpmn:StartEvent':
+          {
+            const 
+              nav                   = dom.new('nav'),
+              nav_ul                = dom.new('ul'),
+              nav_li_schema         = dom.new('li'),
+              nav_li_input          = dom.new('li'),
+              nav_li_settings       = dom.new('li'),
+              nav_li_span_schema    = dom.new('span'),
+              nav_li_span_input     = dom.new('span'),
+              nav_li_span_settings  = dom.new('span'),
+              div_schema            = dom.new('div'),
+              div_input             = dom.new('div'),
+              div_settings          = dom.new('div'),
+              schema_form           = dom.new('form'),
+              input_form            = dom.new('form'),
+              settings_form         = dom.new('form'),
+              schema_add_field      = dom.new('button'),
+              schema_add_input      = dom.new('button'),
+              label_udp_port        = dom.new('label'),
+              input_udp_port        = dom.new('input')
+
+            nav_li_span_schema.setContent('Schema')
+            nav_li_span_input.setContent('Input')
+            nav_li_span_settings.setContent('Settings')
+
+            nav_li_span_schema.setAttribute('id', 'bpmn-controls__link--schema')
+            nav_li_span_input.setAttribute('id', 'bpmn-controls__link--input')
+            nav_li_span_settings.setAttribute('id', 'bpmn-controls__link--settings')
+
+            nav_li_span_schema.on('click', () =>
+            {
+              div_schema.setCss('display', 'block')
+              div_input.setCss('display', 'none')
+              div_settings.setCss('display', 'none')
+              
+              nav_li_schema.addClass('active')
+              nav_li_input.removeClass('active')
+              nav_li_settings.removeClass('active')
+            })
+
+            nav_li_span_input.on('click', () =>
+            {
+              div_schema.setCss('display', 'none')
+              div_input.setCss('display', 'block')
+              div_settings.setCss('display', 'none')
+
+              nav_li_schema.removeClass('active')
+              nav_li_input.addClass('active')
+              nav_li_settings.removeClass('active')
+
+              input_form.select('details').remove()
+
+              const input_collection = unserialize(businessObject.get('input')) || []
+
+              for(const input of input_collection)
+              {
+                addInput(input)
+              }
+            })
+
+            nav_li_span_settings.on('click', () =>
+            {
+              div_schema.setCss('display', 'none')
+              div_input.setCss('display', 'none')
+              div_settings.setCss('display', 'block')
+
+              nav_li_schema.removeClass('active')
+              nav_li_input.removeClass('active')
+              nav_li_settings.addClass('active')
+            })
+
+            nav_li_schema.addClass('active')
+            div_schema.setAttribute('id', 'bpmn-controls--schema')
+            div_input.setAttribute('id', 'bpmn-controls--input')
+            div_settings.setAttribute('id', 'bpmn-controls--settings')
+
+            div_input.setCss('display', 'none')
+            div_settings.setCss('display', 'none')
+
+            nav_li_schema.append(nav_li_span_schema)
+            nav_li_input.append(nav_li_span_input)
+            nav_li_settings.append(nav_li_span_settings)
+            nav_ul.append(nav_li_schema)
+            nav_ul.append(nav_li_input)
+            nav_ul.append(nav_li_settings)
+            nav.append(nav_ul)
+
+            div_schema.append(schema_form)
+            div_input.append(input_form)
+            div_settings.append(settings_form)
+            schema_form.append(schema_add_field)
+            input_form.append(schema_add_input)
+
+            label_udp_port.setContent('UDP Port')
+            input_udp_port.setAttribute('type', 'text')
+
+            const udp_port = JSON.parse(businessObject.get('udp_port') || null)
+
+            if(udp_port)
+            {
+              input_udp_port.setValue(udp_port)
+            }
+
+            input_udp_port.on('change', () =>
+            {
+              businessObject.set('udp_port', input_udp_port.getValue())
+              saveDiagram(bpmnModeler)
+            })
+
+            settings_form.append(label_udp_port)
+            settings_form.append(input_udp_port)
+
+            schema_add_field.setContent('Add field')
+
+            function addField(value, type)
+            {
+              const
+                schema_fieldset         = dom.new('fieldset'),
+                schema_wrapper_name     = dom.new('div'),
+                schema_wrapper_type     = dom.new('div'),
+                schema_fieldset_wrapper = dom.new('div'),
+                schema_label_name       = dom.new('label'),
+                schema_label_type       = dom.new('label'),
+                schema_input_name       = dom.new('input'),
+                schema_select_type      = dom.new('select'),
+                schema_delete_field     = dom.new('span')
+
+              // schema_fieldset.append(schema_legend)
+              schema_wrapper_name.append(schema_label_name)
+              schema_wrapper_name.append(schema_input_name)
+              schema_wrapper_type.append(schema_label_type)
+              schema_wrapper_type.append(schema_select_type)
+              schema_fieldset.append(schema_delete_field)
+              schema_fieldset.append(schema_fieldset_wrapper)
+              schema_fieldset_wrapper.append(schema_wrapper_name)
+              schema_fieldset_wrapper.append(schema_wrapper_type)
+
+              // schema_legend.setContent('Field')
+              schema_label_name.setContent('Name')
+              schema_label_type.setContent('Type')
+
+              schema_input_name.setAttribute('type', 'text')
+              schema_input_name.addClass('schema-attribute')
+              schema_input_name.setAttribute('autocomplete', 'off')
+
+              schema_delete_field.addClass('delete-field')
+              schema_delete_field.addClass('material-symbols-outlined')
+              schema_delete_field.setAttribute('title', 'Remove field from the schema')
+              schema_delete_field.setContent('delete')
+
+              schema_delete_field.on('click', () =>
+              {
+                schema_fieldset.remove()
+                fieldOnChange()
+              })
+
+              for(const type of ['string', 'number', 'boolean'])
+              {
+                const schema_select_type_option = dom.new('option')
+
+                schema_select_type_option.setAttribute('value', type)
+                schema_select_type_option.setContent(type)
+
+                schema_select_type.append(schema_select_type_option)
+              }
+
+              schema_form.append(schema_fieldset)
+
+              if(value)
+              {
+                schema_input_name.setValue(value)
+              }
+
+              if(type)
+              {
+                schema_select_type.select('option').get().forEach((option) => 
+                {
+                  if(option.value === type)
+                  {
+                    dom.from(option).setAttribute('selected', 'selected')
+                  }
+                  else
+                  {
+                    dom.from(option).removeAttribute('selected')
+                  }
+                })
+              }
+
+              function fieldOnChange()
+              {
+                const schema = {}
+                schema_form.select('input').get().forEach((input) => schema[input.value] = dom.from(input).parent('fieldset').select('select').getValue())
+                businessObject.set('schema', JSON.stringify(schema))
+                saveDiagram(bpmnModeler)
+              }
+
+              schema_input_name.on('change', fieldOnChange)
+              schema_select_type.on('change', fieldOnChange)
+            }
+
+            schema_add_field.on('click', (event) =>
+            {
+              event.preventDefault()
+
+              addField()
+              flashMessage('added field')
+
+              return false
+            })
+
+            const schema = JSON.parse(businessObject.get('schema') || null)
+
+            for(const attribute in schema)
+            {
+              addField(attribute, schema[attribute])
+            }
+
+            function inputOnChange()
+            {
+              const input = input_form.select('details').get().map((details) => dom.from(details).select('input').valueMap())
+              businessObject.set('input', serialize(input))
+              saveDiagram(bpmnModeler)
+            }
+
+            function addInput(dto)
+            {
+              const
+                enabled_input = dom.new('input'),
+                input_details = dom.new('details'),
+                input_summary = dom.new('summary')
+
+              enabled_input.addClass('use')
+              enabled_input.on('change', inputOnChange)
+              enabled_input.setAttribute('type', 'checkbox')
+              enabled_input.setAttribute('title', 'Select the checkbox to use the input when testing the process')
+              enabled_input.setAttribute('name', '_enabled')
+
+              if(dto === undefined
+              ||(dto && dto._enabled === 'on'))
+              {
+                enabled_input.setAttribute('checked', 'checked')
+              }
+
+              input_summary.append(enabled_input)
+              input_details.append(input_summary)
+
+              const schema_attributes = div_schema.select('input.schema-attribute').get().map((input) => input.value)
+              
+              if(schema_attributes.length === 0)
+              {
+                schema_attributes.push('raw input, no schema')
+              }
+
+              for(const attribute of schema_attributes)
+              {
+                const
+                  label         = dom.new('label'),
+                  input         = dom.new('input'),
+                  delete_input  = dom.new('span')
+
+                label.setContent(attribute)
+                input.setAttribute('type', 'text')
+                input.setAttribute('name', attribute)
+                input.setAttribute('autocomplete', 'off')
+
+                if(dto && attribute in dto)
+                {
+                  input.setValue(dto[attribute])
+                }
+
+                delete_input.addClass('delete-field')
+                delete_input.addClass('material-symbols-outlined')
+                delete_input.setContent('delete')
+                delete_input.setAttribute('title', 'Remove input example')
+
+                input_details.append(delete_input)
+                input_details.append(label)
+                input_details.append(input)
+
+                input.on('change', inputOnChange)
+                delete_input.on('click', () =>
+                {
+                  input_details.remove()
+                  inputOnChange()
+                })
+              }
+
+              input_form.append(input_details)
+            }
+
+            schema_add_input.setContent('Add input')
+
+            schema_add_input.on('click', (event) =>
+            {
+              event.preventDefault()
+              addInput()
+              return false
+            })
+
+            dom.select('#bpmn-controls').append(nav)
+            dom.select('#bpmn-controls').append(div_schema)
+            dom.select('#bpmn-controls').append(div_input)
+            dom.select('#bpmn-controls').append(div_settings)
+
+            break
+          }
+          case 'bpmn:ScriptTask':
+          case 'bpmn:Task':
+          {
+            const 
+              nav               = dom.new('nav'),
+              nav_ul            = dom.new('ul'),
+              nav_li_code       = dom.new('li'),
+              nav_li_span_code  = dom.new('span'),
+              div_code          = dom.new('div'),
+              div_code_textarea = dom.new('textarea')
+
+            nav_li_span_code.setContent('Code')
+
+            nav_li_span_code.setAttribute('id', 'bpmn-controls__link--code')
+            div_code.setAttribute('id', 'bpmn-controls--code')
+            div_code_textarea.setAttribute('id', 'bpmn-controls--code--teaxtarea')
+
+            nav_li_code.addClass('active')
+            nav_li_code.append(nav_li_span_code)
+            nav_ul.append(nav_li_code)
+            nav.append(nav_ul)
+            div_code.append(div_code_textarea)
+
+            dom.select('#bpmn-controls').append(nav)
+            dom.select('#bpmn-controls').append(div_code)
+
+            div_code_textarea.setContent(unserialize(businessObject.get('code')) || '')
+
+            const codeMirror = CodeMirror.fromTextArea(div_code_textarea.get(0), 
+            {
+              lineNumbers : true,
+              mode        : 'javascript'
+            })
+
+            setTimeout(() => codeMirror.refresh(), 100)
+            setTimeout(() => codeMirror.refresh(), 1000)
+
+            codeMirror.on('change', () => 
+            {
+              businessObject.set('code', serialize(codeMirror.getValue()))
+              saveDiagram(bpmnModeler)
+            })
+            break
+          }
+          case 'bpmn:DataStoreReference':
+          {
+            const 
+              nav                   = dom.new('nav'),
+              nav_ul                = dom.new('ul'),
+              nav_li_settings       = dom.new('li'),
+              nav_li_span_settings  = dom.new('span'),
+              div_settings          = dom.new('div'),
+              div_settings_form     = dom.new('form')
+
+            nav_li_span_settings.setContent('Settings')
+
+            nav_li_span_settings.setAttribute('id', 'bpmn-controls__link--settings')
+            div_settings.setAttribute('id', 'bpmn-controls--settings')
+
+            nav_li_settings.addClass('active')
+            nav_li_settings.append(nav_li_span_settings)
+            nav_ul.append(nav_li_settings)
+            nav.append(nav_ul)
+            div_settings.append(div_settings_form)
+
+            dom.select('#bpmn-controls').append(nav)
+            dom.select('#bpmn-controls').append(div_settings)
+
+            const oldSettings = JSON.parse(businessObject.get('settings') || null)
+
+            for(const attribute of ['host', 'port' , 'user' , 'password' , 'database', 'connectionLimit', 'queueLimit', 'charset', 'timezone'])
+            {
+              const 
+                label = dom.new('label'),
+                input = dom.new('input')
+
+              label.setContent(attribute)
+              input.setAttribute('type', 'text')
+              input.setAttribute('name', attribute)
+              input.setAttribute('autocomplete', 'off')
+
+              if(oldSettings && attribute in oldSettings)
+              {
+                input.setValue(oldSettings[attribute])
+              }
+
+              div_settings_form.append(label)
+              div_settings_form.append(input)
+
+              input.on('change', () =>
+              {
+                const settings = div_settings_form.select('input').valueMap()
+                businessObject.set('settings', JSON.stringify(settings))
+                saveDiagram(bpmnModeler)
+              })
+            }
+            break
+          }
+          default:
+          {
+            const 
+              nav     = dom.new('nav'),
+              nav_ul  = dom.new('ul')
+
+            nav.append(nav_ul)
+            dom.select('#bpmn-controls').append(nav)
+            break
+          }
+        }
+      }
+
+      async function openDiagram(bpmnModeler, bpmnXML) 
+      {
+        // import diagram
+        try 
+        {
+          await bpmnModeler.importXML(bpmnXML)
+
+          // access modeler components
+          // var canvas = bpmnModeler.get('canvas')
+
+          // zoom to fit full viewport
+          // canvas.zoom('fit-viewport')
+        }
+        catch (error) 
+        {
+          console.error('could not import BPMN 2.0 diagram', error)
+          notification('Failed to open diagram', 'Could not open the provided BPMN diagram.')
+        }
+      }
+
+      async function saveDiagram(bpmnModeler)
+      {
+        const new_bpmn_xml = await bpmnModeler.saveXML({ format: false })
+        if(new_bpmn_xml.xml !== bpmn_xml)
+        {
+          bpmn_xml = new_bpmn_xml.xml
+          fetch('/_bpm/save',
+          {
+            method    : 'POST',
+            headers   : { 'Content-Type': 'application/json' },
+            body      : JSON.stringify({ pid:'{{ pid }}', bpmn_xml }),
+            redirect  : 'manual'
+          })
+          .then((response) => 
+          {
+            if (response.ok) 
+            {
+              flashMessage('saved')
+            }
+            else
+            {
+              throw new Error('network response was not ok ' + response.statusText)
+            }
+          })
+          .catch((error) => 
+          {
+            notification('Failed to save', 'Could not save the changes made to the BPMN diagram. Likely caused by a network issue.')
+            console.error('Failed to save', error)
+          })
+        }
+      }
+    </script>
+
+    <script>
+      // modeler instance
+      const bpmnModeler = new BpmnJS(
+      {
+        container: '#bpmn-canvas',
+        keyboard: 
+        {
+          bindTo: window
+        }
+      })
+
+      bpmnModeler.get('eventBus').on('element.click', onActivitySelected)
+      bpmnModeler.get('eventBus').on('shape.added', onActivitySelected)
+
+      dom.select('#bpmn-save').on('click', async () =>
+      {
+        if(new_bpmn_xml.xml !== bpmn_xml)
+        {
+          bpmn_xml = new_bpmn_xml.xml
+          fetch('/_bpm/save-state',
+          {
+            method    : 'POST',
+            headers   : { 'Content-Type': 'application/json' },
+            body      : JSON.stringify({ pid:'{{ pid }}' }),
+            redirect  : 'manual'
+          })
+          .then(response => 
+          {
+            if (response.ok) 
+            {
+              flashMessage('saved state')
+            }
+            else
+            {
+              throw new Error('network response was not ok ' + response.statusText)
+            }
+          })
+          .catch((error) => 
+          {
+            notification('Failed to save', 'Could not save the changes made to the BPMN diagram. Likely caused by a network issue.')
+            console.error('Failed to save', error)
+          })
+        }
+      })
+
+      dom.select('#bpmn-import').on('click', async () =>
+      {
+        try
+        {
+          const imported = await dialog('Import', 'Insert a BPMN diagram in XML format in the textare bellow to import the diagram to the modeler.')
+          await bpmnModeler.importXML(imported)
+        }
+        catch(error)
+        {
+          console.error('Failed to import diagram', error)
+          notification('Failed to import diagram', 'Could not import BPMN diagram.')
+        }
+      })
+
+      dom.select('#bpmn-export').on('click', async () =>
+      {
+        try
+        {
+          const 
+            result  = await bpmnModeler.saveXML({ format: true }),
+            xml     = result.xml.replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(/"/g, '&quot;')
+                                .replace(/'/g, '&#039;')
+
+          notification('Exported diagram', '<pre>' + xml + '</pre>')
+        }
+        catch(error)
+        {
+          console.error('Failed to export the diagram', error)
+          notification('Failed to export the diagram', 'Could not export the BPMN diagram.')
+        }
+      })
+
+      dom.select('#bpmn-test').on('click', async () =>
+      {
+        const xml = await bpmnModeler.saveXML({ format: false })
+        
+        fetch('/_bpm/test',
+        {
+          method  : 'POST',
+          headers : { 'Content-Type': 'application/json' },
+          body    : JSON.stringify({ bpmn_xml:xml.xml })
+        })
+        .then(response => 
+        {
+          if (!response.ok) 
+          {
+            throw new Error('Network response was not ok ' + response.statusText)
+          }
+          return response.json()
+        })
+        .then((data) => 
+        {
+          console.log('tested process successfully completed:', data)
+
+          dom.select('#bpmn-terminal').click()
+          dom.select('#bpmn-terminals #bpmn-terminals-container').append(
+            dom.new('section')
+              .append(dom.new('div').setContent(new Date().toLocaleTimeString()))
+              .append(dom.new('pre').setContent(data)))
+
+          const element = dom.select('#bpmn-terminals #bpmn-terminals-container').get(0)
+          element.scrollTop = element.scrollHeight - element.clientHeight
+          flashMessage('process tested')
+        })
+        .catch((error) => 
+        {
+          console.error('Error:', error)
+          notification('Failed to test process', 'Could not test the process described by the BPMN diagram.')
+        })
+      })
+
+      dom.select('#bpmn-terminal').on('click', () =>
+      {
+        if(dom.select('#bpmn-terminals').getCss('display') !== 'block')
+        {
+          const top = dom.select('#bpmn-controls').setCss('display', 'none').getCss('top')
+          dom.select('#bpmn-terminals').setCss('display', 'block').setCss('top', top)
+        }
+
+        if(dom.select('#bpmn-terminals .resize').get().length === 0)
+        {
+          const
+            nav         = dom.new('nav'),
+            nav_ul      = dom.new('ul'),
+            nav_li      = dom.new('li'),
+            li_span     = dom.new('span'),
+            terminals   = dom.new('div'),
+            resise_bar  = createControllerResizeButton()
+
+          nav_li.addClass('active')
+          li_span.setContent('Terminal')
+
+          terminals.setAttribute('id', 'bpmn-terminals-container')
+
+          nav_li.append(li_span)
+          nav_ul.append(nav_li)
+          nav.append(nav_ul)
+          dom.select('#bpmn-terminals').append(nav)
+          dom.select('#bpmn-terminals').append(terminals)
+          dom.select('#bpmn-terminals').append(resise_bar)
+        }
+      })
+
+      dom.select('#bpmn-download-as-image').on('click', () =>
+      {
+        const 
+          canvas  = dom.select('#bpmn-canvas canvas').get(0),
+          image   = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'),
+          tmpLink = dom.new('a')
+
+        tmpLink.setAttribute('download', 'diagram.png')
+        tmpLink.setAttribute('href', image)
+        tmpLink.setCss('display', 'none')
+
+        dom.append(tmpLink)
+        tmpLink.click()
+        dom.remove(tmpLink)
+      })
+
+      dom.from(window).on('beforeunload', (event) =>
+      {
+        const
+          url   = '/_bpm/save-state',
+          data  = JSON.stringify({ pid: '{{ pid }}' }),
+          blob  = new Blob([data], { type: 'application/json' })
+
+        navigator.sendBeacon(url, blob)
+      })
+
+      let bpmn_xml = `{{{ bpmn_xml }}}`
+
+      // load external diagram file via AJAX and open it
+      openDiagram(bpmnModeler, bpmn_xml)
+      setInterval(() => saveDiagram(bpmnModeler), 1e3)
+    </script>
+  {{/ inline }}
+{{/ layout-private }}
