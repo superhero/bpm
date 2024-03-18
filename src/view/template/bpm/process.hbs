@@ -3,7 +3,6 @@
     <title>Process - BPM</title>
 
     <script src="/_bpm/resource/js/dom.js"></script>
-
     <script src="/_bpm/resource/js/modal/dialog.js"></script>
     <script src="/_bpm/resource/js/modal/notification.js"></script>
     <script src="/_bpm/resource/js/modal/flash-message.js"></script>
@@ -585,13 +584,14 @@
           })
           .then((response) => 
           {
-            if (response.ok) 
+            if(response.status === 0 
+            ||(response.status >= 200 && response.status < 400))
             {
               flashMessage('saved')
             }
             else
             {
-              throw new Error('network response was not ok ' + response.statusText)
+              throw new Error('network response was not ok: ' + response.status + ' - ' + response.statusText)
             }
           })
           .catch((error) => 
@@ -619,33 +619,30 @@
 
       dom.select('#bpmn-save').on('click', async () =>
       {
-        if(new_bpmn_xml.xml !== bpmn_xml)
+        fetch('/_bpm/save-state',
         {
-          bpmn_xml = new_bpmn_xml.xml
-          fetch('/_bpm/save-state',
+          method    : 'POST',
+          headers   : { 'Content-Type': 'application/json' },
+          body      : JSON.stringify({ pid:'{{ pid }}' }),
+          redirect  : 'manual'
+        })
+        .then((response) => 
+        {
+          if(response.status === 0
+          ||(response.status >= 200 && response.status < 400))
           {
-            method    : 'POST',
-            headers   : { 'Content-Type': 'application/json' },
-            body      : JSON.stringify({ pid:'{{ pid }}' }),
-            redirect  : 'manual'
-          })
-          .then(response => 
+            flashMessage('saved state')
+          }
+          else
           {
-            if (response.ok) 
-            {
-              flashMessage('saved state')
-            }
-            else
-            {
-              throw new Error('network response was not ok ' + response.statusText)
-            }
-          })
-          .catch((error) => 
-          {
-            notification('Failed to save', 'Could not save the changes made to the BPMN diagram. Likely caused by a network issue.')
-            console.error('Failed to save', error)
-          })
-        }
+            throw new Error('network response was not ok: ' + response.status + ' - ' + response.statusText)
+          }
+        })
+        .catch((error) => 
+        {
+          notification('Failed to save', 'Could not save the changes made to the BPMN diagram. Likely caused by a network issue.')
+          console.error('Failed to save', error)
+        })
       })
 
       dom.select('#bpmn-import').on('click', async () =>
@@ -697,7 +694,7 @@
         {
           if (!response.ok) 
           {
-            throw new Error('Network response was not ok ' + response.statusText)
+            throw new Error('network response was not ok: ' + response.status + ' - ' + response.statusText)
           }
           return response.json()
         })
