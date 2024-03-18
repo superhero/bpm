@@ -29,6 +29,15 @@ class Bpmn
     {
       this.console.color('yellow').log(`- loading bpm: "${pid}"`)
       const bpmn_xml = processes[pid]
+
+      if(typeof bpmn_xml !== 'string')
+      {
+        const error = new Error('bpmn process xml is not a string')
+        error.code  = 'E_BPMN_XML_NOT_STRING'
+        error.chain = { pid, bpmn_xml }
+        throw error
+      }
+
       const bpmn = await new Promise((resolve, reject) => xml2js.parseString(bpmn_xml, (error, result) => error ? reject(error) : resolve(result)))
       const dataStore = this.buildDataStore(bpmn)
       this.eventBusManager[pid] = this.buildEventBus(bpmn, dataStore)

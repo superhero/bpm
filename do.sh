@@ -44,7 +44,7 @@ if [ $? -eq 0 ]; then
 else
     read -p "MySQL container is not running. Do you want to run a MySQL container? (y/n) " answerMysql
     if [[ ${answerMysql:0:1} == [yY] ]]; then
-        $MYSQL_ROOT_PASSWORD=my-secret-pw
+        $MYSQL_ROOT_PASSWORD="my-secret-pw"
         docker run --name mysql-bpm -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -d -p 3306:3306 mysql
         if [ $? -ne 0 ]; then
             echo "\033[31m✖ Failed to run MySQL container.\033[0m"

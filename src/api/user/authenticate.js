@@ -12,14 +12,12 @@ class Authenticate extends Dispatcher
       user          = this.route.dto.user,
       password      = this.route.dto.password,
       bpmUser       = this.locator.locate('bpm/user'),
-      messageQueue  = this.locator.locate('message-queue/client'),
       authenticated = await bpmUser.authenticate(user, password)
 
     if(authenticated)
     {
-      // TODO !!! bugfix the message queues wait method, it should be able to wait for one of the paths to take place
-      // ... if this is fixed, one does not need to update after the user has been authenticated
-      // await messageQueue.wait('bpm/user', 'key/' + authenticated.key, ['authenticated'], ['unauthenticated'], 10e3)
+      // sleep to process the event loop and the eventual consistency
+      await new Promise((accept) => setImmediate(accept))
 
       this.session.cookies.set('key', authenticated.key)
 

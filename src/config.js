@@ -56,7 +56,7 @@ module.exports =
           {
             url         : '/_bpm/save-state',
             method      : 'post',
-            endpoint    : 'api/bpm/save',
+            endpoint    : 'api/bpm/save-state',
             input       : 'bpm/schema/input/save-state',
             output      : false,
             permission  : 'admin',
