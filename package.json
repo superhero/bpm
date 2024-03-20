@@ -4,6 +4,7 @@
   "description": "A business process builder and manager",
   "repository": "-",
   "license": "MIT",
+  "main": "src/config.js",
   "scripts": {
     "test": "mocha",
     "start": "node src/index.js"
