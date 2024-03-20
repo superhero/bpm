@@ -3,8 +3,6 @@ const
   coreFactory = new CoreFactory,
   core        = coreFactory.create(process.env.BRANCH)
 
-core.add('@superhero/core.message-queue')
-
 core.add('bpm', __dirname)
 
 core.load()

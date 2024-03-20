@@ -11,8 +11,9 @@ module.exports =
     },
     dependency:
     {
-      '@superhero/core.handlebars'  : '@superhero/core.handlebars',
-      '@superhero/core.resource'    : '@superhero/core.resource'
+      '@superhero/core.handlebars'    : '@superhero/core.handlebars',
+      '@superhero/core.resource'      : '@superhero/core.resource',
+      '@superhero/core.message-queue' : '@superhero/core.message-queue'
     },
     locator:
     {
