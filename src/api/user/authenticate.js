@@ -17,7 +17,7 @@ class Authenticate extends Dispatcher
     if(authenticated)
     {
       // sleep to process the event loop and the eventual consistency
-      await new Promise((accept) => setImmediate(accept))
+      await new Promise((accept) => setTimeout(accept, 1e3))
 
       this.session.cookies.set('key', authenticated.key)
 

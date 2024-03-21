@@ -18,7 +18,7 @@ The `do.sh` script facilitates the setup of Redis and MySQL servers, making them
 
 ---
 
-Upon completing the CLI commands specified, open your web browser and navigate to `localhost/_bpm/register/first-user` for initial registration. For login purposes, if not automatically prompted, visit `localhost/_bpm/login`.
+Upon completing the CLI commands specified, open your web browser and navigate to `localhost/_bpm/login/register/first-user` for initial registration. For login purposes, if not automatically prompted, visit `localhost/_bpm/login`.
 
 Note: Should you encounter an authorization error after logging in, refresh the browser page to rectify this issue. This is a recognized problem within the message queue component that the BPM system relies on.
 
