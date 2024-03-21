@@ -10,12 +10,16 @@ class BpmnSaveState extends Dispatcher
   {
     const 
       messageQueue        = this.locator.locate('message-queue/client'),
+      // settings            = this.locator.locate('bpm/settings'),
       domain              = 'bpm/process',
       pid                 = this.route.dto.pid,
       name                = 'saved',
       messageLog          = await messageQueue.readMessageLog(domain, pid),
       filteredMessageLog  = messageQueue.filterMessageLogByName(messageLog, name),
       data                = messageQueue.composeMessageState(filteredMessageLog)
+      // gitRemote           = await settings.readGitRemote(),
+      // gitUser             = await settings.readGitUser(),
+      // gitKeyPair          = await settings.readKeyPair()
 
     if(data === undefined)
     {
@@ -24,6 +28,12 @@ class BpmnSaveState extends Dispatcher
       error.chain = { pid, messageLog, filteredMessageLog, data }
       throw error
     }
+
+    // if(gitRemote && gitUser)
+    // {
+    // TODO!!! push to remote branch matching the pid variable
+    //         if the branch does not exist, then create it...
+    // }
 
     await messageQueue.write({ domain, pid, name, data })
 

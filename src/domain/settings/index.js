@@ -54,6 +54,17 @@ class Settings
     return { publicKey, privateKey }
   }
 
+  async readKeyPair()
+  {
+    const
+      domain        = 'bpm/settings',
+      pid           = 'settings/key-pair',
+      messageLog    = await this.messageQueue.readMessageLog(domain, pid),
+      messageState  = this.messageQueue.composeMessageState(messageLog)
+
+    return messageState
+  }
+
   async readGitRemote()
   {
     const
@@ -72,6 +83,26 @@ class Settings
       pid     = 'settings/git-remote'
 
     await this.messageQueue.write({ domain, pid, name:'persisted', data:{ remote }})
+  }
+
+  async readGitUser()
+  {
+    const
+      domain        = 'bpm/settings',
+      pid           = 'settings/git-user',
+      messageLog    = await this.messageQueue.readMessageLog(domain, pid),
+      messageState  = this.messageQueue.composeMessageState(messageLog)
+
+    return messageState?.user
+  }
+
+  async persistUser(user)
+  {
+    const
+      domain  = 'bpm/settings',
+      pid     = 'settings/git-user'
+
+    await this.messageQueue.write({ domain, pid, name:'persisted', data:{ user }})
   }
 }
 
