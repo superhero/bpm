@@ -41,7 +41,8 @@
       dom.select('.delete-process-form').on('submit', (event) =>
       {
         event.preventDefault()
-        confirmation('Delete process', 'Are you sure you want to delete this process?').then((response) => response === 'accept' && event.target.submit())
+        confirmation('Delete process', 'Are you sure you want to delete this process?')
+          .then((response) => response === 'accept' && event.target.submit())
       })
     </script>
   {{/ inline }}
