@@ -11,6 +11,9 @@ select
   border-radius: 4px;
   min-width: 200px;
 }
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
 input::placeholder 
 {
   color: #999;
