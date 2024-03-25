@@ -65,6 +65,26 @@ class Settings
     return messageState
   }
 
+  async readOpenAiKey()
+  {
+    const
+      domain        = 'bpm/settings',
+      pid           = 'settings/open-ai-key',
+      messageLog    = await this.messageQueue.readMessageLog(domain, pid),
+      messageState  = this.messageQueue.composeMessageState(messageLog)
+
+    return messageState?.openAiKey
+  }
+
+  async persistOpenAiKey(openAiKey)
+  {
+    const
+      domain  = 'bpm/settings',
+      pid     = 'settings/open-ai-key'
+
+    await this.messageQueue.write({ domain, pid, name:'persisted', data:{ openAiKey }})
+  }
+
   async readGitUser()
   {
     const

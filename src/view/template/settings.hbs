@@ -36,6 +36,11 @@
             <h1>Settings</h1>
             <small>System configurations</small>
 
+            <form action="/_bpm/settings/open-ai-key" method="post">
+              <label for="user">OpenAI API key</label>
+              <input type="text" name="key" value="{{ openaiApiKey }}" placeholder="ABcdE1fGHijKLMN2oPQRs3tuVWXYz4abc5DeFgHiJKlmNO6pq" autocomplete="off" />
+            </form>
+
             <form action="/_bpm/settings/git-user" method="post">
               <label for="user">Git user</label>
               <input type="text" name="user" value="{{ gitUser }}" placeholder="username" autocomplete="off" />

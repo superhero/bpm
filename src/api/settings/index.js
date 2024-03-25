@@ -12,8 +12,10 @@ class Endpoint extends Dispatcher
       settings  = this.locator.locate('bpm/settings'),
       publicKey = await settings.lazyloadPublicKey(),
       gitRemote = await settings.readGitRemote(),
-      gitUser   = await settings.readGitUser()
+      gitUser   = await settings.readGitUser(),
+      openAiKey = await settings.readOpenAiKey()
 
+    this.view.body.openAiKey  = openAiKey
     this.view.body.gitRemote  = gitRemote
     this.view.body.gitUser    = gitUser
     this.view.body.publicKey  = publicKey

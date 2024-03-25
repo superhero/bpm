@@ -240,6 +240,16 @@ module.exports =
             template    : 'view/template/settings',
             permission  : 'admin',
           },
+          'bpm/settings/open-ai-key':
+          {
+            url         : '/_bpm/settings/open-ai-key',
+            method      : 'post',
+            endpoint    : 'api/settings/open-ai-key',
+            input       : 'bpm/schema/input/open-ai-key',
+            output      : false,
+            template    : 'view/template/settings',
+            permission  : 'admin',
+          },
           'bpm/settings/git-user':
           {
             url         : '/_bpm/settings/git-user',
