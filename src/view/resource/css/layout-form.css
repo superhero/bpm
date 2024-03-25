@@ -11,6 +11,11 @@ select
   border-radius: 4px;
   min-width: 200px;
 }
+input::placeholder 
+{
+  color: #999;
+  font-style: italic;
+}
 input:focus,
 select:focus
 {

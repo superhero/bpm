@@ -8,10 +8,28 @@
 
     <!-- icons styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+      #settings pre
+      {
+        max-width: 300px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        padding: 12px;
+        background: #ececec;
+        border-radius: 3px;
+      }
+      #settings input
+      {
+        max-width: 300px;
+        width: 100%;
+        display: block;
+      }
+    </style>
   {{/ inline }}
 
   {{#* inline "content" }}
-    <div>
+    <div id="settings">
       <div class="position-middle">
         <div>
           <fieldset>
@@ -20,12 +38,12 @@
 
             <form action="/_bpm/settings/git-user" method="post">
               <label for="user">Git user</label>
-              <input type="text" name="user" value="{{ gitUser }}" placeholder="example: username" autocomplete="off" />
+              <input type="text" name="user" value="{{ gitUser }}" placeholder="username" autocomplete="off" />
             </form>
 
             <form action="/_bpm/settings/git-remote" method="post">
               <label for="remote">Git remote</label>
-              <input type="text" name="remote" value="{{ gitRemote }}" placeholder="example: git@github.com:username/repository.git" autocomplete="off" />
+              <input type="text" name="remote" value="{{ gitRemote }}" placeholder="git@github.com:username/repository.git" autocomplete="off" />
             </form>
 
             <form action="/_bpm/settings/regenerate-key-pair" method="post">
