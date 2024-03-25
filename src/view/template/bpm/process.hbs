@@ -607,6 +607,16 @@
     </script>
 
     <script>
+      dom.on('keydown', (event) =>
+      {
+        if(event.key === 'Enter') 
+        {
+          event.preventDefault()
+          console.log('prevent the default behaviour of pressing the enter key...')
+          document.activeElement.blur()
+        }
+      })
+
       // modeler instance
       const bpmnModeler = new BpmnJS(
       {
