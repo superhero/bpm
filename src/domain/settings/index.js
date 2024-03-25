@@ -65,6 +65,26 @@ class Settings
     return messageState
   }
 
+  async readGitUser()
+  {
+    const
+      domain        = 'bpm/settings',
+      pid           = 'settings/git-user',
+      messageLog    = await this.messageQueue.readMessageLog(domain, pid),
+      messageState  = this.messageQueue.composeMessageState(messageLog)
+
+    return messageState?.user
+  }
+
+  async persistGitUser(user)
+  {
+    const
+      domain  = 'bpm/settings',
+      pid     = 'settings/git-user'
+
+    await this.messageQueue.write({ domain, pid, name:'persisted', data:{ user }})
+  }
+
   async readGitRemote()
   {
     const

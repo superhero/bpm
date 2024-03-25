@@ -18,6 +18,11 @@
             <h1>Settings</h1>
             <small>System configurations</small>
 
+            <form action="/_bpm/settings/git-user" method="post">
+              <label for="user">Git user</label>
+              <input type="text" name="user" value="{{ gitUser }}" placeholder="example: username" autocomplete="off" />
+            </form>
+
             <form action="/_bpm/settings/git-remote" method="post">
               <label for="remote">Git remote</label>
               <input type="text" name="remote" value="{{ gitRemote }}" placeholder="example: git@github.com:username/repository.git" autocomplete="off" />
@@ -39,11 +44,11 @@
       dom.select('form input').on('change', (event) =>
       {
         const
-          form      = dom.from(event.target).parent('form'),
-          action    = form.getAttribute('action'),
-          method    = form.getAttribute('method'),
-          headers   = { 'Content-Type':'application/json' },
-          body      = JSON.stringify(form.select('input,select,textarea').valueMap())
+          form    = dom.from(event.target).parent('form'),
+          action  = form.getAttribute('action'),
+          method  = form.getAttribute('method'),
+          headers = { 'Content-Type':'application/json' },
+          body    = JSON.stringify(form.select('input,select,textarea').valueMap())
 
         fetch(action, { method, headers, body, redirect:'manual' })
           .then((response) =>
@@ -58,7 +63,7 @@
             }
           })
           .then((result) => flashMessage('saved'))
-          .catch((error) => notification('Failed to save', 'Failed to save settings changes.<pre>' + error.message + '</pre>'));
+          .catch((error) => notification('Failed to save', 'Failed to save settings changes.<pre>' + error.message + '</pre>'))
       })
     </script>
   {{/ inline }}

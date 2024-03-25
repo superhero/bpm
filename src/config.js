@@ -240,6 +240,16 @@ module.exports =
             template    : 'view/template/settings',
             permission  : 'admin',
           },
+          'bpm/settings/git-user':
+          {
+            url         : '/_bpm/settings/git-user',
+            method      : 'post',
+            endpoint    : 'api/settings/git-user',
+            input       : 'bpm/schema/input/git-user',
+            output      : false,
+            template    : 'view/template/settings',
+            permission  : 'admin',
+          },
           'bpm/settings/git-remote':
           {
             url         : '/_bpm/settings/git-remote',

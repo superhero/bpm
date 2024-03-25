@@ -11,10 +11,12 @@ class Endpoint extends Dispatcher
     const
       settings  = this.locator.locate('bpm/settings'),
       publicKey = await settings.lazyloadPublicKey(),
-      gitRemote = await settings.readGitRemote()
+      gitRemote = await settings.readGitRemote(),
+      gitUser   = await settings.readGitUser()
 
-    this.view.body.gitRemote = gitRemote
-    this.view.body.publicKey = publicKey
+    this.view.body.gitRemote  = gitRemote
+    this.view.body.gitUser    = gitUser
+    this.view.body.publicKey  = publicKey
       .replace('-----BEGIN PUBLIC KEY-----',  '')
       .replace('-----END PUBLIC KEY-----',    '')
       .trim()
