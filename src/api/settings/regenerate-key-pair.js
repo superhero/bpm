@@ -9,7 +9,7 @@ class Endpoint extends Dispatcher
   async dispatch()
   {
     const 
-      settings  = this.locator.locate('bpm/settings'),
+      settings  = this.locator.locate('bpm/domain/settings'),
       keyPair   = await settings.regenerateKeyPair()
 
     this.view.meta.status = 302

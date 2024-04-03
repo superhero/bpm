@@ -9,7 +9,7 @@ class List extends Dispatcher
   async dispatch()
   {
     const 
-      bpmUser = this.locator.locate('bpm/user'),
+      bpmUser = this.locator.locate('bpm/domain/user'),
       list    = await bpmUser.listAll()
 
     this.view.body.list = list

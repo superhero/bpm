@@ -8,7 +8,7 @@ class Endpoint extends Dispatcher
 {
   async dispatch()
   {
-    const settings = this.locator.locate('bpm/settings')
+    const settings = this.locator.locate('bpm/domain/settings')
     await settings.persistGitRemote(this.route.dto.remote)
 
     this.view.meta.status = 302

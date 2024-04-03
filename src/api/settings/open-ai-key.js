@@ -8,7 +8,7 @@ class Endpoint extends Dispatcher
 {
   async dispatch()
   {
-    const settings = this.locator.locate('bpm/settings')
+    const settings = this.locator.locate('bpm/domain/settings')
     await settings.persistOpenAiKey(this.route.dto.key)
 
     this.view.meta.status = 302

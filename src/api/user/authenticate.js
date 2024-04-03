@@ -11,7 +11,7 @@ class Authenticate extends Dispatcher
     const
       user          = this.route.dto.user,
       password      = this.route.dto.password,
-      bpmUser       = this.locator.locate('bpm/user'),
+      bpmUser       = this.locator.locate('bpm/domain/user'),
       authenticated = await bpmUser.authenticate(user, password)
 
     if(authenticated)

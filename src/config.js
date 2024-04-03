@@ -7,7 +7,7 @@ module.exports =
   {
     bootstrap:
     {
-      'bpm/bpmn' : 'bpm/bpmn'
+      'bpm/domain/bpmn' : 'bpm/domain/bpmn'
     },
     dependency:
     {
@@ -17,18 +17,19 @@ module.exports =
     },
     locator:
     {
-      'bpm/*'       : __dirname + '/domain/*',
-      'api/access'  : __dirname + '/api/access',
+      'bpm/api/access'        : __dirname + '/api/access',
+      'bpm/domain/*'          : __dirname + '/domain/*',
+      'bpm/infrastructure/*'  : __dirname + '/infrastructure/*'
     },
     console:
     {
-      maxStringLength : 10e4
+      maxStringLength : 1e5
     },
     http:
     {
       server:
       {
-        timeout: 10 * 1e3,
+        timeout: 1e4,
         routes:
         {
           'authorize':
@@ -295,6 +296,7 @@ module.exports =
     {
       composer:
       {
+        'bpm/schema/entity/*' : __dirname + '/schema/entity/*',
         'bpm/schema/input/*'  : __dirname + '/schema/input/*',
       }
     }
@@ -303,8 +305,22 @@ module.exports =
   {
     partials:
     {
-      'layout-private'  : 'view/template/layout-private',
-      'layout-public'   : 'view/template/layout-public',
+      'layout-private'  : __dirname + '/view/template/layout-private',
+      'layout-public'   : __dirname + '/view/template/layout-public',
+    }
+  },
+  infrastructure:
+  {
+    'open-ai':
+    {
+      gateway:
+      {
+        headers:
+        {
+          'Content-Type'  : 'application/json'
+        },
+        url: 'https://api.openai.com/'
+      }
     }
   },
   client:

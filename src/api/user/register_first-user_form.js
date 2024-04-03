@@ -9,7 +9,7 @@ class RegisterFirstUserForm extends Dispatcher
   async dispatch()
   {
     const 
-      user        = this.locator.locate('bpm/user'),
+      user        = this.locator.locate('bpm/domain/user'),
       usersExists = await user.usersExists()
 
     if(usersExists)

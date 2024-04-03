@@ -16,7 +16,7 @@ class AccessLocator extends LocatorConstituent
     const
       console       = this.locator.locate('core/console'),
       messageQueue  = this.locator.locate('message-queue/client'),
-      bpmnService   = this.locator.locate('bpm/bpmn')
+      bpmnService   = this.locator.locate('bpm/domain/bpmn')
 
     return new Access(console, messageQueue, bpmnService)
   }

@@ -9,7 +9,7 @@ class Register extends Dispatcher
   async dispatch()
   {
     const 
-      user        = this.locator.locate('bpm/user'),
+      user        = this.locator.locate('bpm/domain/user'),
       registered  = await user.register(this.route.dto)
 
     this.view.body = registered

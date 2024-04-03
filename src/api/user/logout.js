@@ -10,7 +10,7 @@ class Authenticate extends Dispatcher
   {
     const
       key     = this.session.cookies.get('key') || this.request.headers['key'],
-      bpmUser = this.locator.locate('bpm/user')
+      bpmUser = this.locator.locate('bpm/domain/user')
 
     await bpmUser.logout(key)
     this.session.cookies.set('key', '')

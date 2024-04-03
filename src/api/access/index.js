@@ -11,7 +11,7 @@ class Access extends Dispatcher
     this.locator.locate('core/console').color('yellow').log(`dispatching...`, this.request.method, this.request.url)
 
     const 
-      access  = this.locator.locate('api/access'),
+      access  = this.locator.locate('bpm/api/access'),
       route   = { pid:this.route.dto.pid, endpoint:this.route.dto.endpoint },
       msg     = this.request.body,
       result  = await access.dispatch({ route, msg })
