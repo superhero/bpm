@@ -34,13 +34,13 @@ module.exports =
         {
           'authorize':
           {
-            middleware  : ['api/user/authorize'],
+            middleware  : [ __dirname + '/api/user/authorize' ],
           },
           'bpm/test':
           {
             url         : '/_bpm/test',
             method      : 'post',
-            endpoint    : 'api/bpm/test',
+            endpoint    : __dirname + '/api/bpm/test',
             input       : 'bpm/schema/input/test',
             output      : false,
             permission  : 'admin',
@@ -49,7 +49,7 @@ module.exports =
           {
             url         : '/_bpm/save',
             method      : 'post',
-            endpoint    : 'api/bpm/save',
+            endpoint    : __dirname + '/api/bpm/save',
             input       : 'bpm/schema/input/save',
             output      : false,
             permission  : 'admin',
@@ -58,7 +58,7 @@ module.exports =
           {
             url         : '/_bpm/save-state',
             method      : 'post',
-            endpoint    : 'api/bpm/save-state',
+            endpoint    : __dirname + '/api/bpm/save-state',
             input       : 'bpm/schema/input/save-state',
             output      : false,
             permission  : 'admin',
@@ -67,7 +67,7 @@ module.exports =
           {
             url         : '/_bpm/delete/:pid',
             method      : 'post',
-            endpoint    : 'api/bpm/delete',
+            endpoint    : __dirname + '/api/bpm/delete',
             input       : 'bpm/schema/input/delete-process',
             output      : false,
             permission  : 'admin',
@@ -75,7 +75,7 @@ module.exports =
           'favicon':
           {
             url         : '/favicon.ico',
-            endpoint    : 'api/favicon',
+            endpoint    : __dirname + '/api/favicon',
             view        : false,
             input       : false,
             output      : false,
@@ -120,7 +120,7 @@ module.exports =
           {
             url         : '/_bpm/login/register/first-user',
             method      : 'post',
-            endpoint    : 'api/user/register_first-user',
+            endpoint    : __dirname + '/api/user/register_first-user',
             input       : 'bpm/schema/input/register',
             output      : false,
             permission  : ['public', 'admin']
@@ -129,7 +129,7 @@ module.exports =
           {
             url         : '/_bpm/login/register',
             method      : 'post',
-            endpoint    : 'api/user/register',
+            endpoint    : __dirname + '/api/user/register',
             input       : 'bpm/schema/input/register',
             output      : false,
             permission  : 'admin',
@@ -138,7 +138,7 @@ module.exports =
           {
             url         : '/_bpm/login/authenticate',
             method      : 'post',
-            endpoint    : 'api/user/authenticate',
+            endpoint    : __dirname + '/api/user/authenticate',
             input       : 'bpm/schema/input/authenticate',
             output      : false,
             permission  : ['public', 'admin'],
@@ -147,7 +147,7 @@ module.exports =
           {
             url         : '/_bpm/login/register',
             method      : 'get',
-            endpoint    : 'api',
+            endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
             template    : 'view/template/user/register',
@@ -157,7 +157,7 @@ module.exports =
           {
             url         : '/_bpm/login/register/first-user',
             method      : 'get',
-            endpoint    : 'api/user/register_first-user_form',
+            endpoint    : __dirname + '/api/user/register_first-user_form',
             input       : false,
             output      : false,
             template    : 'view/template/user/register_first-user',
@@ -167,7 +167,7 @@ module.exports =
           {
             url         : '/_bpm/login',
             method      : 'get',
-            endpoint    : 'api',
+            endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
             template    : 'view/template/user/login',
@@ -176,7 +176,7 @@ module.exports =
           'logout':
           {
             url         : '/_bpm/logout',
-            endpoint    : 'api/user/logout',
+            endpoint    : __dirname + '/api/user/logout',
             input       : false,
             output      : false,
             permission  : 'admin',
@@ -185,7 +185,7 @@ module.exports =
           {
             url         : '/_bpm/process/:pid',
             method      : 'get',
-            endpoint    : 'api/bpm/process',
+            endpoint    : __dirname + '/api/bpm/process',
             input       : 'bpm/schema/input/read-process',
             output      : false,
             template    : 'view/template/bpm/process',
@@ -195,7 +195,7 @@ module.exports =
           {
             url         : '/_bpm',
             method      : 'get',
-            endpoint    : 'api/bpm/list',
+            endpoint    : __dirname + '/api/bpm/list',
             input       : false,
             output      : false,
             template    : 'view/template/bpm/list',
@@ -205,7 +205,7 @@ module.exports =
           {
             url         : '/_bpm/team',
             method      : 'get',
-            endpoint    : 'api/user/list',
+            endpoint    : __dirname + '/api/user/list',
             input       : false,
             output      : false,
             template    : 'view/template/user/list',
@@ -215,7 +215,7 @@ module.exports =
           {
             url         : '/_bpm/profile',
             method      : 'get',
-            endpoint    : 'api',
+            endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
             template    : 'view/template/user/profile',
@@ -225,7 +225,7 @@ module.exports =
           {
             url         : '/_bpm/settings',
             method      : 'get',
-            endpoint    : 'api/settings',
+            endpoint    : __dirname + '/api/settings',
             input       : false,
             output      : false,
             template    : 'view/template/settings',
@@ -235,7 +235,7 @@ module.exports =
           {
             url         : '/_bpm/settings/regenerate-key-pair',
             method      : 'post',
-            endpoint    : 'api/settings/regenerate-key-pair',
+            endpoint    : __dirname + '/api/settings/regenerate-key-pair',
             input       : false,
             output      : false,
             template    : 'view/template/settings',
@@ -245,7 +245,7 @@ module.exports =
           {
             url         : '/_bpm/settings/open-ai-key',
             method      : 'post',
-            endpoint    : 'api/settings/open-ai-key',
+            endpoint    : __dirname + '/api/settings/open-ai-key',
             input       : 'bpm/schema/input/open-ai-key',
             output      : false,
             template    : 'view/template/settings',
@@ -255,7 +255,7 @@ module.exports =
           {
             url         : '/_bpm/settings/git-user',
             method      : 'post',
-            endpoint    : 'api/settings/git-user',
+            endpoint    : __dirname + '/api/settings/git-user',
             input       : 'bpm/schema/input/git-user',
             output      : false,
             template    : 'view/template/settings',
@@ -265,7 +265,7 @@ module.exports =
           {
             url         : '/_bpm/settings/git-remote',
             method      : 'post',
-            endpoint    : 'api/settings/git-remote',
+            endpoint    : __dirname + '/api/settings/git-remote',
             input       : 'bpm/schema/input/git-remote',
             output      : false,
             template    : 'view/template/settings',
@@ -274,7 +274,7 @@ module.exports =
           'bpm/fallback':
           {
             url         : '/_bpm/.+',
-            endpoint    : 'api/bpm/fallback',
+            endpoint    : __dirname + '/api/bpm/fallback',
             input       : false,
             output      : false,
             template    : 'view/template/failed',
@@ -283,7 +283,7 @@ module.exports =
           'access':
           {
             url         : '/:pid/:endpoint',
-            endpoint    : 'api/access',
+            endpoint    : __dirname + '/api/access',
             input       : 'bpm/schema/input/access',
             output      : false,
             view        : 'superhero/core/http/server/view/json',
