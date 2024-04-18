@@ -1,3 +1,5 @@
+const viewDirectory = (__dirname + '/view').substring(require('path').dirname(require.main.filename).length + 1)
+
 /**
  * @namespace Bpm.Server
  */
@@ -88,7 +90,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : 'view',
+            directory   : viewDirectory,
             dirname     : '/resource/css',
           },
           'resource/js/modal':
@@ -98,7 +100,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : 'view',
+            directory   : viewDirectory,
             dirname     : '/resource/js/modal',
           },
           'resource/js':
@@ -108,7 +110,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : 'view',
+            directory   : viewDirectory,
             dirname     : '/resource/js',
           },
           // HTML views

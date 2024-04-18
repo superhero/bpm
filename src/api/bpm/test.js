@@ -10,7 +10,7 @@ class BpmnTest extends Dispatcher
   {
     const
       xml2js      = require('xml2js'),
-      bpmnService = this.locator.locate('bpm/bpmn'),
+      bpmnService = this.locator.locate('bpm/domain/bpmn'),
       bpmn        = await new Promise((resolve, reject) => xml2js.parseString(this.route.dto.bpmn_xml, (error, result) => error ? reject(error) : resolve(result))),
       dataStore   = bpmnService.buildDataStore(bpmn),
       eventBus    = bpmnService.buildEventBus(bpmn, dataStore),
