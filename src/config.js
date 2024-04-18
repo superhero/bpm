@@ -1,12 +1,3 @@
-const 
-  { dirname, normalize } = require('path'),
-  viewDirectory = (__dirname + '/').substring(normalize(dirname(require.main.filename) + '/../').length + 1) + 'view'
-
-console.log('.......', normalize(dirname(require.main.filename) + '/../'))
-console.log('__dirname:', __dirname)
-console.log('require.main.filename:', require.main.filename)
-console.log('viewDirectory:', viewDirectory)
-
 /**
  * @namespace Bpm.Server
  */
@@ -97,7 +88,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : viewDirectory,
+            directory   : __dirname + '/view',
             dirname     : '/resource/css',
           },
           'resource/js/modal':
@@ -107,7 +98,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : viewDirectory,
+            directory   : __dirname + '/view',
             dirname     : '/resource/js/modal',
           },
           'resource/js':
@@ -117,7 +108,7 @@ module.exports =
             endpoint    : '@superhero/core.resource',
             input       : false,
             permission  : ['public', 'admin'],
-            directory   : viewDirectory,
+            directory   : __dirname + '/view',
             dirname     : '/resource/js',
           },
           // HTML views

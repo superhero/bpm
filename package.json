@@ -18,7 +18,7 @@
     "@superhero/core.message-queue": "1.0.10",
     "xml2js": "0.6.2",
     "@superhero/core.handlebars": "2.1.6",
-    "@superhero/core.resource": "2.0.2",
+    "@superhero/core.resource": "2.1.0",
     "mysql": "2.18.1"
   }
 }
