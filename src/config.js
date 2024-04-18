@@ -1,5 +1,6 @@
 const viewDirectory = (__dirname + '/view').substring(require('path').dirname(require.main.filename).length + 1)
 
+console.log('__dirname:', __dirname)
 console.log('require.main.filename:', require.main.filename)
 console.log('viewDirectory:', viewDirectory)
 
