@@ -1,5 +1,7 @@
 const viewDirectory = (__dirname + '/view').substring(require('path').dirname(require.main.filename).length + 1)
 
+console.log('viewDirectory:', viewDirectory)
+
 /**
  * @namespace Bpm.Server
  */
