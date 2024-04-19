@@ -16,7 +16,7 @@ class RegisterFirstUserForm extends Dispatcher
     {
       this.view.status    = 401
       this.view.body      = 'Not allowed to add another "first" user when users already exists'
-      this.view.template  = 'view/template/failed'
+      this.view.template  = 'failed'
     }
   }
 }

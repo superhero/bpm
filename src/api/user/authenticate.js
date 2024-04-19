@@ -24,12 +24,12 @@ class Authenticate extends Dispatcher
       this.view.meta.status         = 302
       this.view.headers['Location'] = '/_bpm'
       this.view.body                = 'Authenticated'
-      this.view.template            = 'view/template/successful'
+      this.view.template            = 'successful'
     }
     else
     {
       this.view.meta.status = 401
-      this.view.template    = 'view/template/user/login_failed'
+      this.view.template    = 'user/login_failed'
     }
   }
 }

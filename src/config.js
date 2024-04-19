@@ -150,7 +150,7 @@ module.exports =
             endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/user/register',
+            template    : 'user/register',
             permission  : 'admin',
           },
           'login/register/form/first-user':
@@ -160,7 +160,7 @@ module.exports =
             endpoint    : __dirname + '/api/user/register_first-user_form',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/user/register_first-user',
+            template    : 'user/register_first-user',
             permission  : ['public', 'admin']
           },
           'login':
@@ -170,7 +170,7 @@ module.exports =
             endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/user/login',
+            template    : 'user/login',
             permission  : ['public', 'admin'],
           },
           'logout':
@@ -188,7 +188,7 @@ module.exports =
             endpoint    : __dirname + '/api/bpm/process',
             input       : 'bpm/schema/input/read-process',
             output      : false,
-            template    : __dirname + '/view/template/bpm/process',
+            template    : 'bpm/process',
             permission  : 'admin',
           },
           'bpm/list':
@@ -198,7 +198,7 @@ module.exports =
             endpoint    : __dirname + '/api/bpm/list',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/bpm/list',
+            template    : 'bpm/list',
             permission  : 'admin',
           },
           'bpm/user/list':
@@ -208,7 +208,7 @@ module.exports =
             endpoint    : __dirname + '/api/user/list',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/user/list',
+            template    : 'user/list',
             permission  : 'admin',
           },
           'bpm/user/profile':
@@ -218,7 +218,7 @@ module.exports =
             endpoint    : __dirname + '/api',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/user/profile',
+            template    : 'user/profile',
             permission  : 'admin',
           },
           'bpm/settings':
@@ -228,7 +228,7 @@ module.exports =
             endpoint    : __dirname + '/api/settings',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/settings',
+            template    : 'settings',
             permission  : 'admin',
           },
           'bpm/settings/regenerate-key-pair':
@@ -238,7 +238,7 @@ module.exports =
             endpoint    : __dirname + '/api/settings/regenerate-key-pair',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/settings',
+            template    : 'settings',
             permission  : 'admin',
           },
           'bpm/settings/open-ai-key':
@@ -248,7 +248,7 @@ module.exports =
             endpoint    : __dirname + '/api/settings/open-ai-key',
             input       : 'bpm/schema/input/open-ai-key',
             output      : false,
-            template    : __dirname + '/view/template/settings',
+            template    : 'settings',
             permission  : 'admin',
           },
           'bpm/settings/git-user':
@@ -258,7 +258,7 @@ module.exports =
             endpoint    : __dirname + '/api/settings/git-user',
             input       : 'bpm/schema/input/git-user',
             output      : false,
-            template    : __dirname + '/view/template/settings',
+            template    : 'settings',
             permission  : 'admin',
           },
           'bpm/settings/git-remote':
@@ -268,7 +268,7 @@ module.exports =
             endpoint    : __dirname + '/api/settings/git-remote',
             input       : 'bpm/schema/input/git-remote',
             output      : false,
-            template    : __dirname + '/view/template/settings',
+            template    : 'settings',
             permission  : 'admin',
           },
           'bpm/fallback':
@@ -277,7 +277,7 @@ module.exports =
             endpoint    : __dirname + '/api/bpm/fallback',
             input       : false,
             output      : false,
-            template    : __dirname + '/view/template/failed',
+            template    : 'failed',
             permission  : 'admin',
           },
           'access':
@@ -303,6 +303,7 @@ module.exports =
   },
   handlebars:
   {
+    basepath: __dirname + '/view/template/',
     partials:
     {
       'layout-private'  : __dirname + '/view/template/layout-private',

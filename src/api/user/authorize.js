@@ -24,11 +24,11 @@ class Authorize extends Dispatcher
 
       if(key)
       {
-        this.view.template = 'view/template/failed'
+        this.view.template = 'failed'
       }
       else
       {
-        this.view.template = 'view/template/user/login'
+        this.view.template = 'user/login'
       }
     }
   }

@@ -16,7 +16,7 @@ class RegisterFirstUser extends Dispatcher
     {
       this.view.status    = 401
       this.view.body      = 'Not allowed to add another "first" user when users already exists'
-      this.view.template  = 'view/template/failed'
+      this.view.template  = 'failed'
     }
     else
     {
@@ -25,7 +25,7 @@ class RegisterFirstUser extends Dispatcher
       this.view.meta.status         = 302
       this.view.headers['Location'] = '/_bpm/login'
       this.view.body                = 'Registered'
-      this.view.template            = 'view/template/successful'
+      this.view.template            = 'successful'
     }
   }
 }

@@ -16,7 +16,7 @@ class Authenticate extends Dispatcher
     this.session.cookies.set('key', '')
 
     this.view.body      = 'User have logged out'
-    this.view.template  = 'view/template/successful'
+    this.view.template  = 'successful'
   }
 }
 
