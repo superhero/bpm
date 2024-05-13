@@ -201,14 +201,14 @@ module.exports =
             template    : 'bpm/list',
             permission  : 'admin',
           },
-          'bpm/user/list':
+          'bpm/user/team':
           {
             url         : '/_bpm/team',
             method      : 'get',
             endpoint    : __dirname + '/api/user/list',
             input       : false,
             output      : false,
-            template    : 'user/list',
+            template    : 'user/team',
             permission  : 'admin',
           },
           'bpm/user/profile':
